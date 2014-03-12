@@ -54,6 +54,9 @@ abstract public class GraphView extends LinearLayout {
 	static final private class GraphViewConfig {
 		static final float BORDER = 20;
 	}
+	
+	boolean showHorizontalGridLines = true;
+	boolean showVerticalGridLines = true;
 
 	private class GraphViewContentView extends View {
 		private float lastTouchEventX;
@@ -110,12 +113,13 @@ abstract public class GraphView extends LinearLayout {
 				verlabels = generateVerlabels(graphheight);
 			}
 
-			// vertical lines
+			// Horizontal lines
 			paint.setTextAlign(Align.LEFT);
 			int vers = verlabels.length - 1;
 			for (int i = 0; i < verlabels.length; i++) {
 				paint.setColor(graphViewStyle.getGridColor());
 				float y = ((graphheight / vers) * i) + border;
+				if(showHorizontalGridLines||i==verlabels.length-1)
 				canvas.drawLine(horstart, y, width, y, paint);
 			}
 
@@ -414,12 +418,14 @@ abstract public class GraphView extends LinearLayout {
 
 	protected void drawHorizontalLabels(Canvas canvas, float border,
 			float horstart, float height, String[] horlabels, float graphwidth) {
-		// horizontal labels + lines
+		// horizontal labels + vertical lines
 		int hors = horlabels.length - 1;
 		for (int i = 0; i < horlabels.length; i++) {
 			paint.setColor(graphViewStyle.getGridColor());
 			float x = ((graphwidth / hors) * i) + horstart;
-			canvas.drawLine(x, height - border, x, border, paint);
+			if(showVerticalGridLines||i==0){
+			  canvas.drawLine(x, height - border, x, border, paint);
+			}
             if(showHorizontalLabels) {
                 paint.setTextAlign(Align.CENTER);
                 if (i==horlabels.length-1)
@@ -1008,6 +1014,22 @@ abstract public class GraphView extends LinearLayout {
      */
     public boolean getShowVerticalLabels() {
         return showVerticalLabels;
+    }
+    
+    public boolean isShowHorizontalGridLines() {
+      return showHorizontalGridLines;
+    }
+  
+    public void setShowHorizontalGridLines(boolean showHorizontalGridLines) {
+      this.showHorizontalGridLines = showHorizontalGridLines;
+    }
+  
+    public boolean isShowVerticalGridLines() {
+      return showVerticalGridLines;
+    }
+  
+    public void setShowVerticalGridLines(boolean showVerticalGridLines) {
+      this.showVerticalGridLines = showVerticalGridLines;
     }
 
 }
